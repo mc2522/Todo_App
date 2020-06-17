@@ -1,9 +1,22 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="/assets/style.css" />
+        <title>Todo List</title>
+        <link rel="stylesheet" type="text/css" href="/assets/style.css" />
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div id="todo-list" class="center-parent">
+            <img src="/assets/logo.png">
+            <form id="submit-form" type="submit" method="POST" action="/">
+                <input type="text" name="todo" placeholder="Type todo here" autocomplete="off" required />
+                <br />
+                <button>Add Todo</button>
+            </form>
+            <ul>
+                <% data.forEach(todo => { %>
+                    <li><%= todo %></li>
+                <% }) %>
+            </ul>
+        </div>
     </body>
 </html>
