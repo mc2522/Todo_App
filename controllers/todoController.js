@@ -13,16 +13,12 @@ module.exports = (app) => {
     })
 
     app.post('/', urlencodedParser, (req, res) => {
-        console.log("POST INVOKED")
         todos.push(req.body.item)
-        console.log(req.body)
         res.json({data: todos})
     })
 
     app.delete('/:item', (req, res) => {
-        console.log("DELETE INVOKED")
         todos = todos.filter(todo => todo.trim().replace(/ /g, '-') !== req.params.item)
-        console.log(todos)
         res.json({data: todos})
     })
 
