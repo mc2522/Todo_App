@@ -1,6 +1,7 @@
 const bodyParser = require('body-parser')
 const path = require('path')
 const mongoose = require('mongoose')
+const { response } = require('express')
 require('dotenv').config()
 
 // middleware for POST
@@ -16,28 +17,31 @@ const todoSchema = new mongoose.Schema({
 }) 
 
 const Todo = mongoose.model('Todo', todoSchema)
-let itemOne = Todo({todo: 'get groceries'}).save(err => {
-    if (err) console.log(err)
-    console.log('todo saved')
-})
-
-// array of todos to display
-let todos = ["todo 1", "todo 2"]
 
 module.exports = (app) => {
 
     app.get('/', (req, res) => {
-        res.render('index.ejs', {data: todos})
+        // find data from MongoDB data and render 
+        Todo.find({}, (err, data) => {
+            if (err) throw err
+            res.render('index.ejs', {data: data})
+        })
     })
 
     app.post('/', urlencodedParser, (req, res) => {
-        todos.push(req.body.item)
-        res.json({data: todos})
+        console.log(req.body)
+        let todo = Todo(req.body).save((err, data) => {
+            if (err) throw err
+            res.json({data: data})
+        })
     })
 
     app.delete('/:item', (req, res) => {
-        todos = todos.filter(todo => todo.trim().replace(/ /g, '-') !== req.params.item)
-        res.json({data: todos})
+        console.log(req.params.item.trim().replace(/ /g, ' '))
+        Todo.find({todo: req.params.item.trim().replace(/\-/g, ' ')}).deleteOne((err, data) => {
+            if (err) throw err
+            res.json({data: data})
+        })
     })
 
     app.use((req, res) => {

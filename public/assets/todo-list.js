@@ -3,7 +3,7 @@ $(document).ready(function() {
     $('form').on('submit', function(){
 
         var item = $('form input');
-        var todo = {item: item.val()};
+        var todo = {todo: item.val()};
   
         $.ajax({
           type: 'POST',
@@ -19,7 +19,6 @@ $(document).ready(function() {
     $('li').on('click', function() {
         let item = $(this).text().trim().replace(/ /g, '-')
         let url = `/${item}`
-        console.log(url)
         $.ajax({
             type: 'DELETE',
             url: url,
