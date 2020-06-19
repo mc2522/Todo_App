@@ -1,5 +1,6 @@
 const express = require('express')
 const app = express()
+require('dotenv').config()
 
 const todoController = require('./controllers/todoController')
 const PORT = 3000
@@ -13,5 +14,5 @@ app.use(express.static('./public'))
 // run controller
 todoController(app)
 
-app.listen(PORT)
+app.listen(process.env.PORT)
 console.log("listening to port 3000")
