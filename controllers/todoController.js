@@ -28,22 +28,31 @@ module.exports = (app) => {
         })
     })
 
+    /**
+     * Post method to add a todo item to the database
+     */
     app.post('/', urlencodedParser, (req, res) => {
-        console.log(req.body)
+        // save data to MongoDB database
         let todo = Todo(req.body).save((err, data) => {
             if (err) throw err
             res.json({data: data})
         })
     })
 
+    /**
+     * Delete method for when user clicks on li element (todo item) to remove it
+     */
     app.delete('/:item', (req, res) => {
-        console.log(req.params.item.trim().replace(/ /g, ' '))
+        // remove data from MongoDB database
         Todo.find({todo: req.params.item.trim().replace(/\-/g, ' ')}).deleteOne((err, data) => {
             if (err) throw err
             res.json({data: data})
         })
     })
 
+    /**
+     * If user goes to an invalid url, render 404 page
+     */
     app.use((req, res) => {
         res.status(404)
         res.sendFile(path.join(__dirname, '../views/404.html'))
